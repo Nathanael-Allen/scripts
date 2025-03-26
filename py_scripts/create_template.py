@@ -19,8 +19,8 @@ try:
         os.mkdir(dir)
 
     print("Installing dev dependancies...")
-    subprocess.run(["npm", "i", "-d", "tailwindcss", "@tailwindcss/cli",
-                    "autoprefixer", "postcss",
+    subprocess.run(["npm", "i", "--save-dev", "tailwindcss",
+                    "@tailwindcss/cli", "autoprefixer", "postcss",
                     "postcss-cli", "nodemon", "prettier",
                     "prettier-plugin-tailwindcss",
                     "tsx", "typescript", "@types/express", "@types/validator"])
@@ -60,6 +60,7 @@ try:
         py_json = json.loads(f.read())
 
     with open("package.json", "w") as f:
+        py_json["type"] = "module"
         py_json["scripts"]["dev"] = "nodemon"
         py_json["scripts"]["build-tw"] = (
             ('@tailwindcss/cli -i ./src/styles/input.css '),
