@@ -7,12 +7,11 @@ from time import time
 from shutil import rmtree
 
 try:
-    cwd = os.getcwd()
     print("Running npm init...")
     subprocess.run(
         ["npm", "init", "-y"], capture_output=True, universal_newlines=True, check=True
     )
-    dirs = {
+    dirs = (
         "src",
         "dist",
         "src/server",
@@ -24,7 +23,7 @@ try:
         "src/views",
         "src/views/pages",
         "src/views/partials",
-    }
+    )
 
     print("Creating directories...")
     for dir in dirs:
@@ -66,7 +65,7 @@ try:
 
     print("Getting template files...")
 
-    template_file_names = {
+    template_file_names = (
         ".prettierrc",
         "nodemon.json",
         "postcss.config.js",
@@ -75,7 +74,7 @@ try:
         "copyAssets.js",
         "index.html",
         "input.css",
-    }
+    )
     for file in template_file_names:
         with open(file, "wb") as f:
             curl = pycurl.Curl()
