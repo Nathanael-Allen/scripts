@@ -18,7 +18,6 @@ try:
         "src/server/utils",
         "src/static",
         "src/static/styles",
-        "src/static/static",
         "src/static/javascript",
         "src/views",
         "src/views/pages",
@@ -37,6 +36,7 @@ try:
             "--save-dev",
             "tailwindcss",
             "@tailwindcss/cli",
+            "@tailwindcss/postcss",
             "autoprefixer",
             "postcss",
             "postcss-cli",
@@ -47,6 +47,7 @@ try:
             "typescript",
             "@types/express",
             "@types/validator",
+            "@types/compression"
         ],
         capture_output=True,
         universal_newlines=True,
@@ -56,7 +57,7 @@ try:
 
     print("Installing production dependencies...")
     subprocess.run(
-        ["npm", "i", "express", "validator", "dotenv", "ejs"],
+        ["npm", "i", "express", "validator", "dotenv", "ejs", "compression"],
         capture_output=True,
         universal_newlines=True,
         check=True,
@@ -88,8 +89,8 @@ try:
             curl.setopt(curl.WRITEDATA, f)
             curl.perform()
             curl.close()
-    os.rename("input.css", "src/static/input.css")
-    os.rename("index.html", "src/index.html")
+    os.rename("input.css", "src/static/styles/input.css")
+    os.rename("index.html", "src/views/pages/index.ejs")
     open("src/server.ts", "a").close()
     print("Files successfully copied!")
 
@@ -100,10 +101,9 @@ try:
     with open("package.json", "w") as f:
         py_json["type"] = "module"
         py_json["scripts"]["dev"] = "nodemon"
-        py_json["scripts"]["build-tw"] = (
-            ("@tailwindcss/cli -i ./src/styles/input.css "),
-            ("-o ./src/styles/output.css"),
-        )
+        py_json["scripts"][
+            "build-tw"
+        ] = "@tailwindcss/cli -i ./src/styles/input.css -o ./src/styles/output.css"
         py_json["scripts"]["copy-assets"] = "node copyAssets.js"
         py_json["scripts"]["build"] = "npm run build-tw && npm run copy-assets && tsc"
         new_json = json.dumps(py_json)
