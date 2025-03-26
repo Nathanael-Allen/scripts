@@ -71,6 +71,7 @@ try:
         )
         new_json = json.dumps(py_json)
         f.write(new_json)
+    subprocess.run(["git", "-b", "main" "init"])
     print("Scripts successfully written!")
     print("Template set up successfully!\n")
 except Exception as e:
